@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class Knife : MonoBehaviour
 {
-  private const string SliceAnimationTriggerName = "SliceTrigger";
+  public string sliceAnimationTriggerName = "KnifeSliceTrigger";
+  public string sliceAnimationStateName = "KnifeSlice";
+  public int sliceAnimationLayerIndex = 0;
+
   private Animator animator;
 
-  void Start()
+  public void Start()
   {
     animator = gameObject.GetComponent<Animator>();
   }
 
-  void Update()
+  public void TriggerSliceAnimation()
   {
-    if (Input.GetKeyDown("k"))
-    {
-      animator.ResetTrigger(SliceAnimationTriggerName);
-      animator.SetTrigger(SliceAnimationTriggerName);
-    }
+    animator.ResetTrigger(sliceAnimationTriggerName);
+    animator.SetTrigger(sliceAnimationTriggerName);
   }
 }

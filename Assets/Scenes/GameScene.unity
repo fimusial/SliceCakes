@@ -129,7 +129,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23836
+  m_Name: pb_Mesh23840
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -293,7 +293,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23748
+  m_Name: pb_Mesh23752
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -457,7 +457,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23764
+  m_Name: pb_Mesh23768
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -988,6 +988,51 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
   m_PVRTiledBaking: 0
+--- !u!1 &620318779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 620318781}
+  - component: {fileID: 620318780}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &620318780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620318779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b12225a012c009547a9089d64cb38424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliceThrottlerTimeSeconds: 0.25
+--- !u!4 &620318781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620318779}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &621536607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,13 +1946,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a47443690278fb54fb7c6e586780227f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationSpeedAngle: -1.5
+  sliceAtAngle: 0
 --- !u!43 &1235759074
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23818
+  m_Name: pb_Mesh23822
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2382,7 +2429,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23778
+  m_Name: pb_Mesh23782
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2546,7 +2593,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23850
+  m_Name: pb_Mesh23854
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3460,13 +3507,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9b75af08e5ea343aa8c8cb056f391d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sliceAnimationTriggerName: KnifeSliceTrigger
+  sliceAnimationStateName: KnifeSlice
+  sliceAnimationLayerIndex: 0
 --- !u!43 &2102376427
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23870
+  m_Name: pb_Mesh23878
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
