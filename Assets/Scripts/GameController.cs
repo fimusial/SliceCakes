@@ -6,24 +6,22 @@ public class GameController : MonoBehaviour
 
   private Cake cake;
   private Knife knife;
-  private Throttler sliceThrottler;
 
   public void Start()
   {
     cake = FindObjectOfType<Cake>();
     knife = FindObjectOfType<Knife>();
-    sliceThrottler = new Throttler(sliceThrottlerTimeSeconds);
   }
 
   public void Update()
   {
     if (Input.GetKeyDown("s"))
     {
-      sliceThrottler.Run(() =>
+      if (!knife.IsSlicingOrInTransition())
       {
         knife.TriggerSliceAnimation();
         cake.Slice();
-      });
+      };
     }
 
     if (Input.GetKeyDown("r"))
