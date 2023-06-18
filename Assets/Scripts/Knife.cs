@@ -20,6 +20,7 @@ public class Knife : MonoBehaviour
     animator.SetTrigger(sliceAnimationTriggerName);
   }
 
+  // todo: bug; still possible to slice faster than the animation allows; maybe check the other transition?
   public bool IsSlicingOrInTransition()
   {
     var inTransition = animator
