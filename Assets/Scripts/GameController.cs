@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-  public float sliceThrottlerTimeSeconds = 0.2f;
-
   private Cake cake;
   private Knife knife;
 
