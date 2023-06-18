@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
 
     if (Input.GetKeyDown("r"))
     {
-      cake.ResetSlices();
+      cake.Reset();
     }
   }
 }
