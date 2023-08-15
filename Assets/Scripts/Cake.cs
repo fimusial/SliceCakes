@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Cake : MonoBehaviour
 {
   public float rotationSpeedAngle = -1.5f; // + for clockwise
   public float sliceAtAngle = 0f; // 180 for left handed knife
+  
+  public int toppingCount = 5;
+  public int toppingHitMargin = 3;
+  public int toppingPositionVariance = 5;
 
   private const int SLIVER_COUNT = 64;
   private readonly List<Sliver> slivers = new List<Sliver>();
@@ -45,22 +50,47 @@ public class Cake : MonoBehaviour
   {
     var sliceAtIndex = AnyAngleToBoundSliverIndex(transform.eulerAngles.y - sliceAtAngle);
     slivers[sliceAtIndex].Active = false;
-    slivers[sliceAtIndex].Topping.Active = false;
+
+    RangeAround(sliceAtIndex, toppingHitMargin)
+    .ToList()
+    .ForEach(unboundIndex =>
+      {
+        slivers[Modulo(unboundIndex, SLIVER_COUNT)].Topping.Active = false;
+      });
   }
 
   public void Reset()
   {
     slivers.ForEach(x =>
-    {
-      x.Active = true;
+      {
+        x.Active = true;
+        x.Topping.Active = false;
+      });
 
-      // todo: generate n random indexes and activate based on that
-      // todo: pass n as parameter
-      x.Topping.Active = Random.Range(0f, 1f) < 0.05f;
-    });
+    GetQuasiRandomToppingIndexes()
+    .ToList()
+    .ForEach(boundIndex =>
+      {
+        slivers[boundIndex].Topping.Active = true;
+      });
+  }
+
+  private IEnumerable<int> GetQuasiRandomToppingIndexes()
+  {
+    var spread = SLIVER_COUNT / toppingCount;
+    for (int i = 0; i < toppingCount; i++)
+    {
+      var unboundIndex = (i * spread) + Random.Range(-toppingPositionVariance, toppingPositionVariance);
+      yield return Modulo(unboundIndex, SLIVER_COUNT);
+    }
   }
 
   // Math
+  private IEnumerable<int> RangeAround(int middle, int width)
+  {
+    return Enumerable.Range(middle - width / 2, width);
+  }
+
   private float AnySliverIndexToBoundAngle(int index)
   {
     var boundIndex = Modulo(index, SLIVER_COUNT);
