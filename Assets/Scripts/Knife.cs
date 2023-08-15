@@ -4,7 +4,6 @@ public class Knife : MonoBehaviour
 {
   public string sliceAnimationTriggerName = "KnifeSliceTrigger";
   public string sliceAnimationStateName = "KnifeSlice";
-  public string idleAnimationStateName = "KnifeIdle";
   public int sliceAnimationLayerIndex = 0;
 
   private Animator animator;
@@ -20,17 +19,10 @@ public class Knife : MonoBehaviour
     animator.SetTrigger(sliceAnimationTriggerName);
   }
 
-  // todo: bug; still possible to slice faster than the animation allows; maybe check the other transition?
-  public bool IsSlicingOrInTransition()
+  public bool IsSlicing()
   {
-    var inTransition = animator
-      .GetAnimatorTransitionInfo(sliceAnimationLayerIndex)
-      .IsName($"{idleAnimationStateName} -> {sliceAnimationStateName}");
-
-    var slicing = animator
+    return animator
       .GetCurrentAnimatorStateInfo(sliceAnimationLayerIndex)
       .IsName(sliceAnimationStateName);
-
-    return inTransition || slicing;
   }
 }

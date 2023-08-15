@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
   {
     if (Input.GetKeyDown("s"))
     {
-      if (!knife.IsSlicingOrInTransition())
+      if (!knife.IsSlicing())
       {
         knife.TriggerSliceAnimation();
         cake.Slice();
