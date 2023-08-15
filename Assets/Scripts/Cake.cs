@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,6 +11,10 @@ public class Cake : MonoBehaviour
   public int toppingCount = 5;
   public int toppingHitMargin = 3;
   public int toppingPositionVariance = 5;
+
+  public event Action ToppingSmashed;
+  public event Action CakeSliced;
+  public event Action CakeReset;
 
   private const int SLIVER_COUNT = 64;
   private readonly List<Sliver> slivers = new List<Sliver>();
@@ -55,8 +60,17 @@ public class Cake : MonoBehaviour
     .ToList()
     .ForEach(unboundIndex =>
       {
-        slivers[Modulo(unboundIndex, SLIVER_COUNT)].Topping.Active = false;
+        var topping = slivers[Modulo(unboundIndex, SLIVER_COUNT)].Topping;
+        
+        if (topping.Active)
+        {
+          ToppingSmashed.Invoke();
+        }
+
+        topping.Active = false;
       });
+
+    CakeSliced.Invoke();
   }
 
   public void Reset()
@@ -73,6 +87,8 @@ public class Cake : MonoBehaviour
       {
         slivers[boundIndex].Topping.Active = true;
       });
+
+    CakeReset.Invoke();
   }
 
   private IEnumerable<int> GetQuasiRandomToppingIndexes()
@@ -80,7 +96,7 @@ public class Cake : MonoBehaviour
     var spread = SLIVER_COUNT / toppingCount;
     for (int i = 0; i < toppingCount; i++)
     {
-      var unboundIndex = (i * spread) + Random.Range(-toppingPositionVariance, toppingPositionVariance);
+      var unboundIndex = (i * spread) + UnityEngine.Random.Range(-toppingPositionVariance, toppingPositionVariance);
       yield return Modulo(unboundIndex, SLIVER_COUNT);
     }
   }
