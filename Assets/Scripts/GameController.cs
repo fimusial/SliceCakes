@@ -4,16 +4,17 @@ public class GameController : MonoBehaviour
 {
   private Cake cake;
   private Knife knife;
+  private HudController hudController;
 
   public void Start()
   {
     cake = FindObjectOfType<Cake>();
     knife = FindObjectOfType<Knife>();
+    hudController = FindObjectOfType<HudController>();
 
-    // debug
-    cake.CakeReset += () => Debug.Log(nameof(cake.CakeReset));
-    cake.CakeSliced += () => Debug.Log(nameof(cake.CakeSliced));
-    cake.ToppingSmashed += () => Debug.Log(nameof(cake.ToppingSmashed));
+    // sample
+    cake.CakeReset += () => hudController.UpdateScore((uint)Time.frameCount);
+    cake.CakeSliced += () => hudController.TriggerToast("slice");
   }
 
   public void Update()
