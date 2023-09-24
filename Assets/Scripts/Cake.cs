@@ -64,13 +64,13 @@ public class Cake : MonoBehaviour
         
         if (topping.Active)
         {
-          ToppingSmashed.Invoke();
+          ToppingSmashed?.Invoke();
         }
 
         topping.Active = false;
       });
 
-    CakeSliced.Invoke();
+    CakeSliced?.Invoke();
   }
 
   public void Reset()
@@ -88,7 +88,7 @@ public class Cake : MonoBehaviour
         slivers[boundIndex].Topping.Active = true;
       });
 
-    CakeReset.Invoke();
+    CakeReset?.Invoke();
   }
 
   private IEnumerable<int> GetQuasiRandomToppingIndexes()
