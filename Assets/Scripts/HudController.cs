@@ -6,23 +6,40 @@ public class HudController : MonoBehaviour
 {
     // set in Unity UI
     public TMP_Text textScore;
+    public TMP_Text textToast;
 
     public void Start()
     {
-        textScore.text = 0.ToString();
-        StartCoroutine(nameof(SampleCoroutine));
+        textScore.text = "SLICE CAKES!";
+        textToast.text = string.Empty;
     }
 
-    public void Update()
+    public void UpdateScore(uint score)
     {
+        textScore.text = score.ToString();
     }
 
-    private IEnumerator SampleCoroutine()
+    public void TriggerToast(string message)
     {
-        for (int i = 0; i < 500; i++)
+        StopCoroutine(nameof(ToastCoroutine));
+        textToast.text = message;
+        StartCoroutine(nameof(ToastCoroutine));
+    }
+
+    private IEnumerator ToastCoroutine()
+    {
+        textToast.alpha = 1f;
+        var yIncrement = Screen.height / 256f;
+
+        textToast.rectTransform.transform.SetPositionAndRotation(
+            new Vector3(Screen.width / 2f, Screen.height / 2f, 0f),
+            Quaternion.identity);
+
+        for (int i = 1; i <= 64; i++)
         {
-            yield return new WaitForSeconds(0.05f);
-            textScore.text = i.ToString();
+            yield return new WaitForSeconds(1f / 64f);
+            textToast.rectTransform.Translate(0f, yIncrement, 0f);
+            textToast.alpha = 1f - i * 1f / 64f;
         }
     }
 }
