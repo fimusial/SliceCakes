@@ -1394,6 +1394,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b12225a012c009547a9089d64cb38424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minSliceCount: 3
+  maxSliceCount: 7
 --- !u!4 &620318781
 Transform:
   m_ObjectHideFlags: 0
@@ -4634,8 +4636,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 963194228}
   - {fileID: 705507995}
+  - {fileID: 620318781}
+  - {fileID: 836068308}
   - {fileID: 1071298720}
   - {fileID: 2079252230}
-  - {fileID: 620318781}
   - {fileID: 1025558204}
-  - {fileID: 836068308}

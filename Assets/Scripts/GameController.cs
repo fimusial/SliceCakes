@@ -2,9 +2,15 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+  public int minSliceCount = 3;
+  public int maxSliceCount = 7;
+
   private Cake cake;
   private Knife knife;
   private HudController hudController;
+
+  // gameplay state
+  private int slicesLeft = -1;
 
   public void Start()
   {
@@ -12,9 +18,25 @@ public class GameController : MonoBehaviour
     knife = FindObjectOfType<Knife>();
     hudController = FindObjectOfType<HudController>();
 
-    // sample
-    cake.CakeReset += () => hudController.UpdateScore((uint)Time.frameCount);
-    cake.CakeSliced += () => hudController.TriggerToast("slice");
+    ResetSlicesLeft();
+    cake.Reset();
+    hudController.UpdateScore(slicesLeft);
+
+    cake.CakeSliced += () =>
+    {
+      slicesLeft--;
+      if (slicesLeft == 0)
+      {
+        ResetSlicesLeft();
+        cake.Reset();
+      }
+      hudController.UpdateScore(slicesLeft);
+    };
+
+    cake.ToppingSmashed += () =>
+    {
+      hudController.TriggerToast("smash!");
+    };
   }
 
   public void Update()
@@ -27,10 +49,10 @@ public class GameController : MonoBehaviour
         cake.Slice();
       };
     }
+  }
 
-    if (Input.GetKeyDown("r"))
-    {
-      cake.Reset();
-    }
+  private void ResetSlicesLeft()
+  {
+    slicesLeft = Random.Range(minSliceCount, maxSliceCount);
   }
 }
