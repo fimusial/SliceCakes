@@ -14,7 +14,7 @@ public class HudController : MonoBehaviour
         textToast.text = string.Empty;
     }
 
-    public void UpdateScore(uint score)
+    public void UpdateScore(int score)
     {
         textScore.text = score.ToString();
     }
