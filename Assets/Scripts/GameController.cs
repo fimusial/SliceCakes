@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
     hudController = FindObjectOfType<HudController>();
 
     ResetSlicesLeft();
-    cake.Reset();
+    cake.ResetSlicesAndToppings();
     hudController.UpdateScore(slicesLeft);
 
     cake.CakeSliced += () =>
@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour
       if (slicesLeft == 0)
       {
         ResetSlicesLeft();
-        cake.Reset();
+        cake.TriggerResetTransition();
       }
       hudController.UpdateScore(slicesLeft);
     };
@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
   {
     if (Input.GetKeyDown("s"))
     {
-      if (!knife.IsSlicing())
+      if (!knife.IsSlicing() && !cake.ResetTransitionInProgress)
       {
         knife.TriggerSliceAnimation();
         cake.Slice();
