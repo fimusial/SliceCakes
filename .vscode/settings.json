@@ -54,6 +54,7 @@
     },
     "dotnet.defaultSolution": "SliceCakes.sln",
     "cSpell.words": [
-        "Behaviour"
+        "Behaviour",
+        "Lerp"
     ]
 }

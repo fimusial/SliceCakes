@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Cake : MonoBehaviour
@@ -120,9 +119,11 @@ public class Cake : MonoBehaviour
   private IEnumerator ResetAnimationCoroutine()
   {
     var groups = GetSlicedSliverGroups();
-    for (int frameIndex = 1; frameIndex <= 192; frameIndex++)
+
+    // 256 frames in total over 1 second, first loop 192, second loop 64
+    for (int frameIndex = 0; frameIndex < 192; frameIndex++)
     {
-      var accel = frameIndex / 2048f;
+      var accel = frameIndex / 4096f;
       for (int groupIndex = 0; groupIndex < groups.Count; groupIndex++)
       {
         if (frameIndex >= groupIndex * (128 / groups.Count))
@@ -137,11 +138,10 @@ public class Cake : MonoBehaviour
     slivers.ForEach(x => x.transform.position = firstSliverInitialPosition);
     ResetState();
 
-    // TODO: left handed knife
-    transform.position = new Vector3(-2f, cakeInitialPosition.y, cakeInitialPosition.z);
-    for (int frameIndex = 1; frameIndex <= 64; frameIndex++)
+    var leftShiftedCake = new Vector3(-2f, cakeInitialPosition.y, cakeInitialPosition.z); // TODO: left handed knife
+    for (int frameIndex = 0; frameIndex < 64; frameIndex++)
     {
-      transform.position = new Vector3(-2f + 2f * frameIndex / 64f, cakeInitialPosition.y, cakeInitialPosition.z);
+      transform.position = Vector3.Lerp(leftShiftedCake, cakeInitialPosition, frameIndex / 64f);
       yield return new WaitForSeconds(1f / 256f);
     }
 
@@ -177,7 +177,7 @@ public class Cake : MonoBehaviour
       groups.Remove(lastGroup);
     }
 
-    return groups.OrderBy(x => x.Count).ToList();
+    return groups.OrderByDescending(x => x.Count).ToList();
   }
 
   private IEnumerable<int> GetQuasiRandomToppingIndexes()
