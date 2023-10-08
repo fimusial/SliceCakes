@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Cake : MonoBehaviour
 {
   public float rotationSpeedAngle = -1.5f; // + for clockwise
-  public float sliceAtAngle = 0f; // 180 for left handed knife
+  public float sliceAtAngle = 0f; // TODO: left handed knife
 
   public int toppingCount = 5;
   public int toppingHitMargin = 3;
@@ -19,12 +20,16 @@ public class Cake : MonoBehaviour
 
   private const int SLIVER_COUNT = 64;
   private readonly List<Sliver> slivers = new List<Sliver>();
+
   private Vector3 firstSliverInitialPosition;
+  private Vector3 cakeInitialPosition;
 
   public bool ResetAnimationInProgress { get; private set; } = false;
 
   public void Start()
   {
+    cakeInitialPosition = transform.position;
+
     var firstSliver = gameObject.GetComponentInChildren<Sliver>();
     firstSliverInitialPosition = firstSliver.transform.position;
 
@@ -115,14 +120,14 @@ public class Cake : MonoBehaviour
   private IEnumerator ResetAnimationCoroutine()
   {
     var groups = GetSlicedSliverGroups();
-
-    for (int frameIndex = 1; frameIndex <= 256; frameIndex++)
+    for (int frameIndex = 1; frameIndex <= 192; frameIndex++)
     {
+      var accel = frameIndex / 2048f;
       for (int groupIndex = 0; groupIndex < groups.Count; groupIndex++)
       {
         if (frameIndex >= groupIndex * (128 / groups.Count))
         {
-          groups[groupIndex].ForEach(sliver => sliver.transform.Translate(0f, -1f / 64f, 0f));
+          groups[groupIndex].ForEach(sliver => sliver.transform.Translate(0f, -accel, 0f));
         }
       }
 
@@ -130,10 +135,17 @@ public class Cake : MonoBehaviour
     }
 
     slivers.ForEach(x => x.transform.position = firstSliverInitialPosition);
-    
     ResetState();
 
-    // slide the cake in from right/left
+    // TODO: left handed knife
+    transform.position = new Vector3(-2f, cakeInitialPosition.y, cakeInitialPosition.z);
+    for (int frameIndex = 1; frameIndex <= 64; frameIndex++)
+    {
+      transform.position = new Vector3(-2f + 2f * frameIndex / 64f, cakeInitialPosition.y, cakeInitialPosition.z);
+      yield return new WaitForSeconds(1f / 256f);
+    }
+
+    transform.position = cakeInitialPosition;
     ResetAnimationInProgress = false;
     CakeReset?.Invoke();
   }
