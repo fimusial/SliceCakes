@@ -52,5 +52,8 @@
         "temp/":true,
         "Temp/":true
     },
-    "dotnet.defaultSolution": "SliceCakes.sln"
+    "dotnet.defaultSolution": "SliceCakes.sln",
+    "cSpell.words": [
+        "Behaviour"
+    ]
 }
