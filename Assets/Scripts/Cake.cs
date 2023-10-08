@@ -21,7 +21,7 @@ public class Cake : MonoBehaviour
   private readonly List<Sliver> slivers = new List<Sliver>();
   private Vector3 firstSliverInitialPosition;
 
-  public bool ResetTransitionInProgress { get; private set; } = false;
+  public bool ResetAnimationInProgress { get; private set; } = false;
 
   public void Start()
   {
@@ -79,18 +79,24 @@ public class Cake : MonoBehaviour
     CakeSliced?.Invoke();
   }
 
-  public void TriggerResetTransition()
+  public void ResetState(bool noAnimation = false)
   {
-    if (ResetTransitionInProgress)
+    if (noAnimation)
     {
-      throw new InvalidOperationException($"Called {nameof(TriggerResetTransition)} while reset transition was in progress");
+      ResetState();
+      return;
     }
 
-    ResetTransitionInProgress = true;
-    StartCoroutine(nameof(ResetTransitionCoroutine));
+    if (ResetAnimationInProgress)
+    {
+      throw new InvalidOperationException($"Called {nameof(ResetState)} with animation, but an animation was already in progress");
+    }
+
+    ResetAnimationInProgress = true;
+    StartCoroutine(nameof(ResetAnimationCoroutine));
   }
 
-  public void ResetSlicesAndToppings()
+  private void ResetState()
   {
     slivers.ForEach(x =>
       {
@@ -106,7 +112,7 @@ public class Cake : MonoBehaviour
       });
   }
 
-  private IEnumerator ResetTransitionCoroutine()
+  private IEnumerator ResetAnimationCoroutine()
   {
     var groups = GetSlicedSliverGroups();
 
@@ -125,10 +131,10 @@ public class Cake : MonoBehaviour
 
     slivers.ForEach(x => x.transform.position = firstSliverInitialPosition);
     
-    ResetSlicesAndToppings();
+    ResetState();
 
     // slide the cake in from right/left
-    ResetTransitionInProgress = false;
+    ResetAnimationInProgress = false;
     CakeReset?.Invoke();
   }
 
