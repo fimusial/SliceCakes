@@ -2294,6 +2294,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &922271380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 922271381}
+  - component: {fileID: 922271382}
+  m_Layer: 0
+  m_Name: Knife
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &922271381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922271380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2079252230}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &922271382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922271380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb9b75af08e5ea343aa8c8cb056f391d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliceAnimationTriggerName: KnifeSliceTrigger
+  sliceAnimationStateName: KnifeSlice
+  sliceAnimationLayerIndex: 0
+  leftHanded: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2549,8 +2598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a47443690278fb54fb7c6e586780227f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeedAngle: -1.5
-  sliceAtAngle: 0
+  rotationSpeedAngle: 1.5
+  sliceAtAngle: 180
   toppingCount: 5
   toppingHitMargin: 3
   toppingPositionVariance: 5
@@ -4249,9 +4298,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2079252230}
   - component: {fileID: 2079252231}
-  - component: {fileID: 2079252232}
   m_Layer: 0
-  m_Name: Knife
+  m_Name: KnifeLocal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4265,7 +4313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2079252229}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.17364825, w: 0.9848078}
+  m_LocalRotation: {x: -0, y: -0, z: -0.17364825, w: 0.9848078}
   m_LocalPosition: {x: 0.75, y: 0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4273,7 +4321,7 @@ Transform:
   - {fileID: 675806907}
   - {fileID: 1621774417}
   - {fileID: 1907640021}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 922271381}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -20}
 --- !u!95 &2079252231
 Animator:
@@ -4296,21 +4344,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2079252232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2079252229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb9b75af08e5ea343aa8c8cb056f391d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sliceAnimationTriggerName: KnifeSliceTrigger
-  sliceAnimationStateName: KnifeSlice
-  sliceAnimationLayerIndex: 0
 --- !u!1 &2110661523
 GameObject:
   m_ObjectHideFlags: 0
@@ -4639,5 +4672,5 @@ SceneRoots:
   - {fileID: 620318781}
   - {fileID: 836068308}
   - {fileID: 1071298720}
-  - {fileID: 2079252230}
+  - {fileID: 922271381}
   - {fileID: 1025558204}
