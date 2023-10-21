@@ -63,6 +63,11 @@ public class Cake : MonoBehaviour
 
   public void Slice()
   {
+    if (ResetAnimationInProgress)
+    {
+      throw new InvalidOperationException($"Called {nameof(Slice)} while reset animation was in progress.");
+    }
+
     var sliceAtIndex = AnyAngleToBoundSliverIndex(transform.eulerAngles.y - sliceAtAngle);
     slivers[sliceAtIndex].Active = false;
 
@@ -85,15 +90,15 @@ public class Cake : MonoBehaviour
 
   public void ResetState(bool noAnimation = false)
   {
+    if (ResetAnimationInProgress)
+    {
+      throw new InvalidOperationException($"Called {nameof(ResetState)} while reset animation was in progress.");
+    }
+
     if (noAnimation)
     {
       ResetState();
       return;
-    }
-
-    if (ResetAnimationInProgress)
-    {
-      throw new InvalidOperationException($"Called {nameof(ResetState)} with animation, but an animation was already in progress");
     }
 
     ResetAnimationInProgress = true;
