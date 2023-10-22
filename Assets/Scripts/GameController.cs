@@ -4,6 +4,7 @@ public class GameController : MonoBehaviour
 {
   public int minSliceCount = 3;
   public int maxSliceCount = 7;
+  public float sliceAtAngle = 0f;
 
   private Cake cake;
   private Knife knife;
@@ -49,6 +50,9 @@ public class GameController : MonoBehaviour
         cake.Slice();
       };
     }
+
+    cake.SliceAtAngle = sliceAtAngle;
+    knife.SliceAtAngle = sliceAtAngle;
   }
 
   private void ResetSlicesLeft()

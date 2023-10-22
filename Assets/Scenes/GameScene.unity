@@ -2598,8 +2598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a47443690278fb54fb7c6e586780227f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeedAngle: 1.5
-  sliceAtAngle: 180
+  rotationSpeedAngle: -1.5
+  sliceAtAngle: 0
   toppingCount: 5
   toppingHitMargin: 3
   toppingPositionVariance: 5
