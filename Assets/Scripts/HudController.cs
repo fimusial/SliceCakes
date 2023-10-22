@@ -11,7 +11,7 @@ public class HudController : MonoBehaviour
 
     public void Start()
     {
-        textScore.text = "SLICE CAKES!";
+        textScore.text = string.Empty;
         textSlices.text = string.Empty;
         textToast.text = string.Empty;
     }
@@ -19,6 +19,11 @@ public class HudController : MonoBehaviour
     public void UpdateScore(int score)
     {
         textScore.text = score.ToString();
+    }
+
+    public void UpdateScore(string altText)
+    {
+        textScore.text = altText;
     }
 
     public void UpdateSlices(int score)

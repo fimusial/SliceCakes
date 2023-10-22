@@ -21,34 +21,14 @@ public class GameController : MonoBehaviour
     knife = FindObjectOfType<Knife>();
     hudController = FindObjectOfType<HudController>();
 
-    ResetSliceCounters();
     cake.ResetState(noAnimation: true);
+    cake.CakeSliced += OnCakeSliced;
+    cake.ToppingSmashed += OnToppingSmashed;
+    
+    ResetSliceCounters();
+
     hudController.UpdateSlices(slicesLeft);
-
-    cake.CakeSliced += () =>
-    {
-      slicesLeft--;
-      if (slicesLeft == 0)
-      {
-        var scoreChange = cake.GetScoreChange(availableSlices);
-        if (scoreChange > 95)
-        {
-          hudController.TriggerToast("perfect!");
-        }
-        
-        score += scoreChange;
-        hudController.UpdateScore(score);
-        ResetSliceCounters();
-        cake.ResetState();
-      }
-
-      hudController.UpdateSlices(slicesLeft);
-    };
-
-    cake.ToppingSmashed += () =>
-    {
-      hudController.TriggerToast("smash!");
-    };
+    hudController.UpdateScore("slice cakes!");
   }
 
   public void Update()
@@ -64,6 +44,31 @@ public class GameController : MonoBehaviour
 
     cake.SliceAtAngle = sliceAtAngle;
     knife.SliceAtAngle = sliceAtAngle;
+  }
+
+  private void OnCakeSliced()
+  {
+    slicesLeft--;
+    if (slicesLeft == 0)
+    {
+      var scoreChange = cake.GetScoreChange(availableSlices);
+      if (scoreChange > 95)
+      {
+        hudController.TriggerToast("perfect!");
+      }
+
+      score += scoreChange;
+      hudController.UpdateScore(score);
+      ResetSliceCounters();
+      cake.ResetState();
+    }
+
+    hudController.UpdateSlices(slicesLeft);
+  }
+
+  private void OnToppingSmashed()
+  {
+    hudController.TriggerToast("smash!");
   }
 
   private void ResetSliceCounters()
