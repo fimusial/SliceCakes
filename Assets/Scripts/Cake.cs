@@ -6,23 +6,19 @@ using UnityEngine;
 
 public class Cake : MonoBehaviour
 {
-  public float rotationSpeedAngle = -1.5f; // + for clockwise
-  public float sliceAtAngle = 0f; // TODO: left handed knife
-
-  public int toppingCount = 5;
-  public int toppingHitMargin = 3;
-  public int toppingPositionVariance = 5;
+  private const int SLIVER_COUNT = 64;
+  private readonly List<Sliver> slivers = new List<Sliver>();
+  private Vector3 firstSliverInitialPosition;
+  private Vector3 cakeInitialPosition;
 
   public event Action ToppingSmashed;
   public event Action CakeSliced;
   public event Action CakeReset;
-
-  private const int SLIVER_COUNT = 64;
-  private readonly List<Sliver> slivers = new List<Sliver>();
-
-  private Vector3 firstSliverInitialPosition;
-  private Vector3 cakeInitialPosition;
-
+  public float RotationSpeedAngle { get; set; } = -1.5f; // + for clockwise
+  public int ToppingCount { get; set; } = 5;
+  public int ToppingHitMargin { get; set; } = 3;
+  public int ToppingPositionVariance { get; set; } = 5;
+  public float SliceAtAngle { get; set; } = 0f;
   public bool ResetAnimationInProgress { get; private set; } = false;
 
   public void Start()
@@ -58,7 +54,7 @@ public class Cake : MonoBehaviour
 
   public void FixedUpdate()
   {
-    transform.Rotate(Vector3.up, rotationSpeedAngle);
+    transform.Rotate(Vector3.up, RotationSpeedAngle);
   }
 
   public void Slice()
@@ -68,10 +64,10 @@ public class Cake : MonoBehaviour
       throw new InvalidOperationException($"Called {nameof(Slice)} while reset animation was in progress.");
     }
 
-    var sliceAtIndex = AnyAngleToBoundSliverIndex(transform.eulerAngles.y - sliceAtAngle);
+    var sliceAtIndex = AnyAngleToBoundSliverIndex(transform.eulerAngles.y - SliceAtAngle);
     slivers[sliceAtIndex].Active = false;
 
-    RangeAround(sliceAtIndex, toppingHitMargin)
+    RangeAround(sliceAtIndex, ToppingHitMargin)
     .ToList()
     .ForEach(unboundIndex =>
       {
@@ -187,10 +183,10 @@ public class Cake : MonoBehaviour
 
   private IEnumerable<int> GetQuasiRandomToppingIndexes()
   {
-    var spread = SLIVER_COUNT / toppingCount;
-    for (int i = 0; i < toppingCount; i++)
+    var spread = SLIVER_COUNT / ToppingCount;
+    for (int i = 0; i < ToppingCount; i++)
     {
-      var unboundIndex = (i * spread) + UnityEngine.Random.Range(-toppingPositionVariance, toppingPositionVariance);
+      var unboundIndex = (i * spread) + UnityEngine.Random.Range(-ToppingPositionVariance, ToppingPositionVariance);
       yield return Modulo(unboundIndex, SLIVER_COUNT);
     }
   }
