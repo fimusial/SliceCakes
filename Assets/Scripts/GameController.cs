@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
 
     ResetSlicesLeft();
     cake.ResetState(noAnimation: true);
-    hudController.UpdateScore(slicesLeft);
+    hudController.UpdateSlices(slicesLeft);
 
     cake.CakeSliced += () =>
     {
@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour
         ResetSlicesLeft();
         cake.ResetState();
       }
-      hudController.UpdateScore(slicesLeft);
+      hudController.UpdateSlices(slicesLeft);
     };
 
     cake.ToppingSmashed += () =>
