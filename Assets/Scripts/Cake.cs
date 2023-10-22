@@ -75,6 +75,7 @@ public class Cake : MonoBehaviour
 
         if (topping.Active)
         {
+          topping.Smashed = true;
           ToppingSmashed?.Invoke();
         }
 
@@ -82,6 +83,25 @@ public class Cake : MonoBehaviour
       });
 
     CakeSliced?.Invoke();
+  }
+
+  public int GetScoreChange(int slices)
+  {
+    var averageSlice = (SLIVER_COUNT - slices) / slices;
+    
+    var groups = GetSlicedSliverGroups();
+    var accumulator = 0;
+    foreach (var group in groups)
+    {
+      var diff = Math.Abs(averageSlice - group.Count);
+      diff = diff <= 1 ? 0 : diff;
+      accumulator += diff;
+    }
+
+    var smashedCount = slivers.Count(x => x.Topping.Smashed);
+    var scoreChange = 100 - accumulator - (5 * smashedCount);
+    Debug.Log($"Accumulated difference: {accumulator}; Smashed toppings: {smashedCount}; Score change: {scoreChange}");
+    return scoreChange;
   }
 
   public void ResetState(bool noAnimation = false)
@@ -107,6 +127,7 @@ public class Cake : MonoBehaviour
       {
         x.Active = true;
         x.Topping.Active = false;
+        x.Topping.Smashed = false;
       });
 
     GetQuasiRandomToppingIndexes()

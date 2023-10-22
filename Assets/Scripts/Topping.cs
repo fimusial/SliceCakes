@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Topping : MonoBehaviour
 {
+  public bool Smashed { get; set; }
+
   public bool Active
   {
     get
