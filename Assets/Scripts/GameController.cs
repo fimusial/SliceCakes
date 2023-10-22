@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
   private HudController hudController;
 
   // gameplay state
+  private int score = 0;
+  private int availableSlices = -1;
   private int slicesLeft = -1;
 
   public void Start()
@@ -19,7 +21,7 @@ public class GameController : MonoBehaviour
     knife = FindObjectOfType<Knife>();
     hudController = FindObjectOfType<HudController>();
 
-    ResetSlicesLeft();
+    ResetSliceCounters();
     cake.ResetState(noAnimation: true);
     hudController.UpdateSlices(slicesLeft);
 
@@ -28,9 +30,18 @@ public class GameController : MonoBehaviour
       slicesLeft--;
       if (slicesLeft == 0)
       {
-        ResetSlicesLeft();
+        var scoreChange = cake.GetScoreChange(availableSlices);
+        if (scoreChange > 95)
+        {
+          hudController.TriggerToast("perfect!");
+        }
+        
+        score += scoreChange;
+        hudController.UpdateScore(score);
+        ResetSliceCounters();
         cake.ResetState();
       }
+
       hudController.UpdateSlices(slicesLeft);
     };
 
@@ -55,8 +66,8 @@ public class GameController : MonoBehaviour
     knife.SliceAtAngle = sliceAtAngle;
   }
 
-  private void ResetSlicesLeft()
+  private void ResetSliceCounters()
   {
-    slicesLeft = Random.Range(minSliceCount, maxSliceCount);
+    availableSlices = slicesLeft = Random.Range(minSliceCount, maxSliceCount);
   }
 }
