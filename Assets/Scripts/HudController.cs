@@ -6,17 +6,24 @@ public class HudController : MonoBehaviour
 {
     // set in Unity UI
     public TMP_Text textScore;
+    public TMP_Text textSlices;
     public TMP_Text textToast;
 
     public void Start()
     {
         textScore.text = "SLICE CAKES!";
+        textSlices.text = string.Empty;
         textToast.text = string.Empty;
     }
 
     public void UpdateScore(int score)
     {
         textScore.text = score.ToString();
+    }
+
+    public void UpdateSlices(int score)
+    {
+        textSlices.text = score.ToString();
     }
 
     public void TriggerToast(string message)
