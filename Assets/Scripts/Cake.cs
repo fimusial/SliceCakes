@@ -160,10 +160,12 @@ public class Cake : MonoBehaviour
     slivers.ForEach(x => x.transform.position = firstSliverInitialPosition);
     ResetState();
 
-    var leftShiftedCake = new Vector3(-2f, cakeInitialPosition.y, cakeInitialPosition.z); // TODO: left handed knife
+    var cakeShiftedPosition = Quaternion.AngleAxis(SliceAtAngle + 180f, Vector3.up)
+      * new Vector3(5f, cakeInitialPosition.y, cakeInitialPosition.z);
+
     for (int frameIndex = 0; frameIndex < 64; frameIndex++)
     {
-      transform.position = Vector3.Lerp(leftShiftedCake, cakeInitialPosition, frameIndex / 64f);
+      transform.position = Vector3.Lerp(cakeShiftedPosition, cakeInitialPosition, frameIndex / 64f);
       yield return new WaitForSeconds(1f / 256f);
     }
 
