@@ -5072,6 +5072,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1602999576}
+  - component: {fileID: 1602999577}
   m_Layer: 0
   m_Name: ToppingCandle
   m_TagString: Untagged
@@ -5097,6 +5098,20 @@ Transform:
   - {fileID: 1012225688}
   m_Father: {fileID: 1888291528}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1602999577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602999575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a9193e19451b949a7f1fa4e140d737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  candlestickMaterial: {fileID: 2100000, guid: 943c7d2f341633941b33cd81021bdbcd, type: 2}
+  flameTransform: {fileID: 1012225688}
 --- !u!1 &1621774411
 GameObject:
   m_ObjectHideFlags: 0
@@ -5729,7 +5744,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
