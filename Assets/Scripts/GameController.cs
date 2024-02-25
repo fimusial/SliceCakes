@@ -73,6 +73,6 @@ public class GameController : MonoBehaviour
 
   private void ResetSliceCounters()
   {
-    availableSlices = slicesLeft = Random.Range(minSliceCount, maxSliceCount);
+    availableSlices = slicesLeft = UnityEngine.Random.Range(minSliceCount, maxSliceCount);
   }
 }
