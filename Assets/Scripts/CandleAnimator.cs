@@ -3,19 +3,19 @@ using UnityEngine;
 public class CandleAnimator : MonoBehaviour
 {
   // set in Unity UI
-  public Material candlestickMaterial;
+  public MeshRenderer candlestickMeshRenderer;
   public Transform flameTransform;
 
   private float timePhase;
 
   public void Start()
   {
-    timePhase = Random.Range(0f, Mathf.PI);
+    timePhase = UnityEngine.Random.Range(0f, Mathf.PI);
   }
 
   public void FixedUpdate()
   {
-    candlestickMaterial.mainTextureOffset = new Vector2(0f, Mathf.Sin(Time.time));
+    candlestickMeshRenderer.material.mainTextureOffset = new Vector2(0f, Mathf.Sin(Time.time + timePhase));
 
     flameTransform.Rotate(Vector3.up, 5f);
 
