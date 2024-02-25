@@ -88,9 +88,9 @@ public class Cake : MonoBehaviour
   public int GetScoreChange(int slices)
   {
     var averageSlice = (SLIVER_COUNT - slices) / slices;
-    
     var groups = GetSlicedSliverGroups();
     var accumulator = 0;
+
     foreach (var group in groups)
     {
       var diff = Math.Abs(averageSlice - group.Count);
@@ -100,7 +100,6 @@ public class Cake : MonoBehaviour
 
     var smashedCount = slivers.Count(x => x.Topping.Smashed);
     var scoreChange = 100 - accumulator - (5 * smashedCount);
-    Debug.Log($"Accumulated difference: {accumulator}; Smashed toppings: {smashedCount}; Score change: {scoreChange}");
     return scoreChange;
   }
 
