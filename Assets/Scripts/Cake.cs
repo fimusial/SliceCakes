@@ -15,7 +15,7 @@ public class Cake : MonoBehaviour
   public event Action CakeSliced;
   public event Action CakeReset;
   public float RotationSpeedAngle { get; set; } = -1.5f; // + for clockwise
-  public int ToppingCount { get; set; } = 5;
+  public int ToppingCount { get; set; } = 5; // max value: SLIVER_COUNT
   public int ToppingHitMargin { get; set; } = 3;
   public int ToppingPositionVariance { get; set; } = 5;
   public float SliceAtAngle { get; set; } = 0f;
