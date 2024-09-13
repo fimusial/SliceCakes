@@ -21,10 +21,11 @@ public class GameController : MonoBehaviour
     knife = FindObjectOfType<Knife>();
     hudController = FindObjectOfType<HudController>();
 
-    cake.ResetState(noAnimation: true);
     cake.CakeSliced += OnCakeSliced;
     cake.ToppingSmashed += OnToppingSmashed;
-    
+    knife.KnifeDown += OnKnifeDown;
+
+    cake.ResetState(noAnimation: true);
     ResetSliceCounters();
 
     hudController.UpdateSlices(slicesLeft);
@@ -38,12 +39,16 @@ public class GameController : MonoBehaviour
       if (!knife.IsSlicing() && !cake.ResetAnimationInProgress)
       {
         knife.TriggerSliceAnimation();
-        cake.Slice();
       };
     }
 
     cake.SliceAtAngle = sliceAtAngle;
     knife.SliceAtAngle = sliceAtAngle;
+  }
+
+  private void ResetSliceCounters()
+  {
+    availableSlices = slicesLeft = UnityEngine.Random.Range(minSliceCount, maxSliceCount);
   }
 
   private void OnCakeSliced()
@@ -71,8 +76,8 @@ public class GameController : MonoBehaviour
     hudController.TriggerToast("smash!");
   }
 
-  private void ResetSliceCounters()
+  private void OnKnifeDown()
   {
-    availableSlices = slicesLeft = UnityEngine.Random.Range(minSliceCount, maxSliceCount);
+    cake.Slice();
   }
 }
