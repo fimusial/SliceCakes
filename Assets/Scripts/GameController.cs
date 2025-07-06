@@ -42,17 +42,15 @@ public class GameController : MonoBehaviour
   {
     elapsedTime += Time.deltaTime;
     hudController.UpdateElapsedTimeText(elapsedTime);
+    knife.SliceAtAngle = cake.SliceAtAngle = sliceAtAngle;
 
-    if (Input.GetKeyDown("s"))
+    if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
     {
       if (!knife.IsSlicing() && !cake.ResetAnimationInProgress)
       {
         knife.TriggerSliceAnimation();
       }
     }
-
-    cake.SliceAtAngle = sliceAtAngle;
-    knife.SliceAtAngle = sliceAtAngle;
   }
 
   private void ResetSliceCounters()
