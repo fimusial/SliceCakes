@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+  // set in Unity UI
   public int minSliceCount = 3;
   public int maxSliceCount = 7;
   public float sliceAtAngle = 0f;
@@ -11,7 +13,9 @@ public class GameController : MonoBehaviour
   private HudController hudController;
 
   // gameplay state
+  private float elapsedTime = 0f;
   private int score = 0;
+  private int lives = 3;
   private int availableSlices = -1;
   private int slicesLeft = -1;
 
@@ -28,18 +32,23 @@ public class GameController : MonoBehaviour
     cake.ResetState(noAnimation: true);
     ResetSliceCounters();
 
-    hudController.UpdateSlices(slicesLeft);
-    hudController.UpdateScore("slice cakes!");
+    hudController.UpdateScoreText("slice cakes!");
+    hudController.UpdateElapsedTimeText(elapsedTime);
+    hudController.UpdateSlicesText(slicesLeft);
+    hudController.UpdateLivesText(lives);
   }
 
   public void Update()
   {
+    elapsedTime += Time.deltaTime;
+    hudController.UpdateElapsedTimeText(elapsedTime);
+
     if (Input.GetKeyDown("s"))
     {
       if (!knife.IsSlicing() && !cake.ResetAnimationInProgress)
       {
         knife.TriggerSliceAnimation();
-      };
+      }
     }
 
     cake.SliceAtAngle = sliceAtAngle;
@@ -63,17 +72,26 @@ public class GameController : MonoBehaviour
       }
 
       score += scoreChange;
-      hudController.UpdateScore(score);
+      hudController.UpdateScoreText(score);
       ResetSliceCounters();
       cake.ResetState();
     }
 
-    hudController.UpdateSlices(slicesLeft);
+    hudController.UpdateSlicesText(slicesLeft);
   }
 
   private void OnToppingSmashed()
   {
-    hudController.TriggerToast("smash!");
+    lives--;
+    if (lives > 0)
+    {
+      hudController.UpdateLivesText(lives);
+      hudController.TriggerToast("smash!");
+    }
+    else
+    {
+      SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+    }
   }
 
   private void OnKnifeDown()

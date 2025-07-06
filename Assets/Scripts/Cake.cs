@@ -15,6 +15,7 @@ public class Cake : MonoBehaviour
   public event Action CakeSliced;
   public event Action CakeReset;
   public float RotationSpeedAngle { get; set; } = -1.5f; // + for clockwise
+  public float RotationSpeedAngleIncrement { get; set; } = -0.000125f; // + for clockwise
   public int ToppingCount { get; set; } = 5; // max value: SLIVER_COUNT
   public int ToppingHitMargin { get; set; } = 3;
   public int ToppingPositionVariance { get; set; } = 5;
@@ -55,6 +56,7 @@ public class Cake : MonoBehaviour
   public void FixedUpdate()
   {
     transform.Rotate(Vector3.up, RotationSpeedAngle);
+    RotationSpeedAngle += RotationSpeedAngleIncrement;
   }
 
   public void Slice()
@@ -139,6 +141,7 @@ public class Cake : MonoBehaviour
 
   private IEnumerator ResetAnimationCoroutine()
   {
+    const float animationTime = 1f;
     var groups = GetSlicedSliverGroups();
 
     // 256 frames in total over 1 second, first loop 192, second loop 64
@@ -153,7 +156,7 @@ public class Cake : MonoBehaviour
         }
       }
 
-      yield return new WaitForSeconds(1f / 256f);
+      yield return new WaitForSeconds(animationTime / 256f);
     }
 
     slivers.ForEach(x => x.transform.position = firstSliverInitialPosition);
@@ -165,7 +168,7 @@ public class Cake : MonoBehaviour
     for (int frameIndex = 0; frameIndex < 64; frameIndex++)
     {
       transform.position = Vector3.Lerp(cakeShiftedPosition, cakeInitialPosition, frameIndex / 64f);
-      yield return new WaitForSeconds(1f / 256f);
+      yield return new WaitForSeconds(animationTime / 256f);
     }
 
     transform.position = cakeInitialPosition;
