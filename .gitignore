@@ -3,10 +3,9 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 
-/[Aa]ssets/TextMesh*
-
 # Build output
 /BuildOutput/
+/ReleaseBuild/
 
 /[Ll]ibrary/
 /[Tt]emp/
