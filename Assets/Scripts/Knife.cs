@@ -14,6 +14,11 @@ public class Knife : MonoBehaviour
 
   public float SliceAtAngle { get; set; } = 0f;
 
+  public bool SliceAnimationInProgress => animator?
+    .GetCurrentAnimatorStateInfo(sliceAnimationLayerIndex)
+    .IsName(sliceAnimationStateName)
+    ?? false;
+
   public void Start()
   {
     animator = gameObject.GetComponentInChildren<Animator>();
@@ -31,13 +36,6 @@ public class Knife : MonoBehaviour
   {
     animator.ResetTrigger(sliceAnimationTriggerName);
     animator.SetTrigger(sliceAnimationTriggerName);
-  }
-
-  public bool IsSlicing()
-  {
-    return animator
-      .GetCurrentAnimatorStateInfo(sliceAnimationLayerIndex)
-      .IsName(sliceAnimationStateName);
   }
 
   private void OnKnifeDown()

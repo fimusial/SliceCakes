@@ -57,18 +57,18 @@ public class HudController : MonoBehaviour
   private IEnumerator ToastCoroutine()
   {
     const float animationTime = 0.5f;
-    var yIncrement = Screen.height / 256f;
-    textToast.alpha = 1f;
+    float yIncrement = Screen.height / 256f;
 
+    textToast.alpha = 1f;
     textToast.rectTransform.transform.SetPositionAndRotation(
       new Vector3(Screen.width / 2f, Screen.height / 2f, 0f),
       Quaternion.identity);
 
-    for (int i = 1; i <= 32; i++)
+    for (int i = 31; i >= 0; i--)
     {
       yield return new WaitForSeconds(animationTime / 32f);
       textToast.rectTransform.Translate(0f, yIncrement, 0f);
-      textToast.alpha = 1f - i * 1f / 32f;
+      textToast.alpha = i / 32f;
     }
   }
 }

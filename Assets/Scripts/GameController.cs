@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
 
     if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
     {
-      if (!knife.IsSlicing() && !cake.ResetAnimationInProgress)
+      if (!knife.SliceAnimationInProgress && !cake.ResetAnimationInProgress)
       {
         knife.TriggerSliceAnimation();
       }

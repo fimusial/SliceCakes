@@ -2,10 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class Cake : MonoBehaviour
 {
+  [DllImport("__Internal")]
+  private static extern bool IsMobileBrowser();
+
+  private bool isMobileBrowser = false;
   private const int SLIVER_COUNT = 64;
   private readonly List<Sliver> slivers = new List<Sliver>();
   private Vector3 firstSliverInitialPosition;
@@ -24,6 +29,12 @@ public class Cake : MonoBehaviour
 
   public void Start()
   {
+    try
+    {
+      isMobileBrowser = IsMobileBrowser();
+    }
+    catch { }
+
     cakeInitialPosition = transform.position;
 
     var firstSliver = gameObject.GetComponentInChildren<Sliver>();
@@ -55,8 +66,11 @@ public class Cake : MonoBehaviour
 
   public void FixedUpdate()
   {
-    transform.Rotate(Vector3.up, RotationSpeedAngle);
-    RotationSpeedAngle += RotationSpeedAngleIncrement;
+    if (!ResetAnimationInProgress)
+    {
+      transform.Rotate(Vector3.up, RotationSpeedAngle);
+      RotationSpeedAngle += RotationSpeedAngleIncrement;
+    }
   }
 
   public void Slice()
@@ -70,34 +84,33 @@ public class Cake : MonoBehaviour
     slivers[sliceAtIndex].Active = false;
 
     RangeAround(sliceAtIndex, ToppingHitMargin)
-    .ToList()
-    .ForEach(unboundIndex =>
-      {
-        var topping = slivers[Modulo(unboundIndex, SLIVER_COUNT)].Topping;
-
-        if (topping.Active)
+      .ToList()
+      .ForEach(unboundIndex =>
         {
-          topping.Smashed = true;
-          ToppingSmashed?.Invoke();
-        }
+          var topping = slivers[Modulo(unboundIndex, SLIVER_COUNT)].Topping;
 
-        topping.Active = false;
-      });
+          if (topping.Active)
+          {
+            topping.Smashed = true;
+            ToppingSmashed?.Invoke();
+          }
+
+          topping.Active = false;
+        });
 
     CakeSliced?.Invoke();
   }
 
   public int GetScoreChange(int slices)
   {
-    var averageSlice = (SLIVER_COUNT - slices) / slices;
+    var perfectPiece = (SLIVER_COUNT - slices) / slices;
     var groups = GetSlicedSliverGroups();
     var accumulator = 0;
 
     foreach (var group in groups)
     {
-      var diff = Math.Abs(averageSlice - group.Count);
-      diff = diff <= 1 ? 0 : diff;
-      accumulator += diff;
+      var diff = Math.Abs(perfectPiece - group.Count);
+      accumulator += diff <= 1 ? 0 : diff;
     }
 
     var smashedCount = slivers.Count(x => x.Topping.Smashed);
@@ -132,34 +145,39 @@ public class Cake : MonoBehaviour
       });
 
     GetQuasiRandomToppingIndexes()
-    .ToList()
-    .ForEach(boundIndex =>
-      {
-        slivers[boundIndex].Topping.Active = true;
-      });
+      .ToList()
+      .ForEach(boundIndex =>
+        {
+          slivers[boundIndex].Topping.Active = true;
+        });
   }
 
   private IEnumerator ResetAnimationCoroutine()
   {
-    const float animationTime = 1f;
-    var groups = GetSlicedSliverGroups();
-
-    // 256 frames in total over 1 second, first loop 192, second loop 64
-    for (int frameIndex = 0; frameIndex < 192; frameIndex++)
+    if (isMobileBrowser)
     {
-      var accel = frameIndex / 4096f;
-      for (int groupIndex = 0; groupIndex < groups.Count; groupIndex++)
+      yield return new WaitForSeconds(0.5f);
+    }
+    else
+    {
+      var groups = GetSlicedSliverGroups();
+      for (int frameIndex = 0; frameIndex < 128; frameIndex++)
       {
-        if (frameIndex >= groupIndex * (128 / groups.Count))
+        yield return new WaitForEndOfFrame();
+
+        var accel = frameIndex / 2048f;
+        for (int groupIndex = 0; groupIndex < groups.Count; groupIndex++)
         {
-          groups[groupIndex].ForEach(sliver => sliver.transform.Translate(0f, -accel, 0f));
+          if (frameIndex >= groupIndex * (96 / groups.Count))
+          {
+            groups[groupIndex].ForEach(sliver => sliver.transform.Translate(0f, -accel, 0f));
+          }
         }
       }
 
-      yield return new WaitForSeconds(animationTime / 256f);
+      slivers.ForEach(x => x.transform.position = firstSliverInitialPosition);
     }
 
-    slivers.ForEach(x => x.transform.position = firstSliverInitialPosition);
     ResetState();
 
     var cakeShiftedPosition = Quaternion.AngleAxis(SliceAtAngle + 180f, Vector3.up)
@@ -168,7 +186,7 @@ public class Cake : MonoBehaviour
     for (int frameIndex = 0; frameIndex < 64; frameIndex++)
     {
       transform.position = Vector3.Lerp(cakeShiftedPosition, cakeInitialPosition, frameIndex / 64f);
-      yield return new WaitForSeconds(animationTime / 256f);
+      yield return new WaitForEndOfFrame();
     }
 
     transform.position = cakeInitialPosition;
